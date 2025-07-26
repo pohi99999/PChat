@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-Family v2.0 - AI Családi Asszisztens</title>
+    <meta name="description" content="Fejlett családi alkalmazás AI integrációval és gamifikációval">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4A90E2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="P-Family">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E👨‍👩‍👶%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+    <div id="app" class="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <div class="family-logo">👨‍👩‍👶</div>
+                <h1>P-Family</h1>
+                <p>AI Családi Asszisztens betöltése...</p>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Selection Screen -->
+        <div id="profile-selection" class="profile-selection hidden">
+            <div class="profile-header">
+                <h2>Válassz profilt</h2>
+                <p>Ki vagy ma?</p>
+            </div>
+            <div class="profile-grid">
+                <div class="profile-card" data-profile="apa">
+                    <div class="profile-avatar">👨</div>
+                    <h3>Apa</h3>
+                    <div class="profile-points">245 pont</div>
+                    <div class="profile-mood">😊</div>
+                </div>
+                <div class="profile-card" data-profile="anya">
+                    <div class="profile-avatar">👩</div>
+                    <h3>Anya</h3>
+                    <div class="profile-points">289 pont</div>
+                    <div class="profile-mood">😄</div>
+                </div>
+                <div class="profile-card" data-profile="gyerek">
+                    <div class="profile-avatar">👶</div>
+                    <h3>Gyerkőc</h3>
+                    <div class="profile-points">156 pont</div>
+                    <div class="profile-mood">🤗</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Content -->
+        <div id="main-app" class="main-app hidden">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <div id="current-profile" class="current-profile">
+                            <span class="profile-emoji">👨</span>
+                            <span class="profile-name">Apa</span>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button class="btn btn--secondary header-btn" id="beta-feedback-btn">
+                            🧪 Beta
+                        </button>
+                        <button class="btn btn--secondary header-btn" id="profile-switch-btn">
+                            🔄
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <main class="app-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="section-header">
+                        <h2>🏠 Otthon</h2>
+                        <p>Üdvözlünk a P-Family dashboardon!</p>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <button class="quick-action sos-btn" id="sos-btn">
+                            <span class="quick-action-icon">🚨</span>
+                            <span class="quick-action-text">SOS</span>
+                        </button>
+                        <button class="quick-action creative-btn" id="creative-quick-btn">
+                            <span class="quick-action-icon">🎨</span>
+                            <span class="quick-action-text">Kreatív</span>
+                        </button>
+                        <button class="quick-action family-chat-btn" id="family-chat-quick-btn">
+                            <span class="quick-action-icon">💬</span>
+                            <span class="quick-action-text">Chat</span>
+                        </button>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>📊 Mai Aktivitások</h3>
+                            <div class="activity-list">
+                                <div class="activity-item completed">✅ Reggeli sportolás</div>
+                                <div class="activity-item">🎨 Rajzolás Gyerkőccel</div>
+                                <div class="activity-item">📚 Esti mese</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <h3>🏆 Család Pontszám</h3>
+                            <div class="family-points">
+                                <div class="family-member-points">
+                                    <span>👩 Anya</span>
+                                    <span class="points">289</span>
+                                </div>
+                                <div class="family-member-points">
+                                    <span>👨 Apa</span>
+                                    <span class="points">245</span>
+                                </div>
+                                <div class="family-member-points">
+                                    <span>👶 Gyerkőc</span>
+                                    <span class="points">156</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>🌤️ Időjárás</h3>
+                            <div class="weather-info">
+                                <div class="weather-main">
+                                    <span class="weather-icon">☀️</span>
+                                    <span class="weather-temp">22°C</span>
+                                </div>
+                                <p class="weather-desc">Napos, kellemes idő</p>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card ai-suggestions">
+                            <h3>🤖 AI Javaslatok</h3>
+                            <div id="ai-suggestions" class="suggestions-list">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI Assistant Section -->
+                <section id="ai-assistant" class="content-section">
+                    <div class="section-header">
+                        <h2>🤖 AI Asszisztens</h2>
+                        <p>Személyes családi tanácsadó</p>
+                    </div>
+
+                    <div class="ai-features">
+                        <div class="ai-feature" id="mood-tracker">
+                            <h3>😊 Hangulat Követés</h3>
+                            <div class="mood-selector">
+                                <button class="mood-btn" data-mood="😢">😢</button>
+                                <button class="mood-btn" data-mood="😐">😐</button>
+                                <button class="mood-btn active" data-mood="😊">😊</button>
+                                <button class="mood-btn" data-mood="😄">😄</button>
+                                <button class="mood-btn" data-mood="🤗">🤗</button>
+                            </div>
+                            <p>Mai hangulat: <span id="current-mood">😊 Jó</span></p>
+                        </div>
+                    </div>
+
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="chat-message ai">
+                                <div class="message-avatar">🤖</div>
+                                <div class="message-content">
+                                    <p>Szia! Én vagyok a P-Family AI asszisztensed. Hogyan segíthetek ma?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chat-input" placeholder="Írj üzenetet..." class="form-control">
+                            <button class="btn btn--primary" id="send-chat">📤</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Challenges Section -->
+                <section id="challenges" class="content-section">
+                    <div class="section-header">
+                        <h2>🏆 Kihívások</h2>
+                        <p>Családi pontgyűjtő feladatok</p>
+                    </div>
+
+                    <div class="challenges-stats">
+                        <div class="stat-card">
+                            <h3>Összes Pont</h3>
+                            <div class="stat-value">690</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Aktív Kihívások</h3>
+                            <div class="stat-value">4</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Jelvények</h3>
+                            <div class="stat-value">12</div>
+                        </div>
+                    </div>
+
+                    <div class="challenges-list" id="challenges-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <div class="leaderboard">
+                        <h3>🥇 Család Ranglista</h3>
+                        <div class="leaderboard-list">
+                            <div class="leaderboard-item gold">
+                                <div class="rank">1.</div>
+                                <div class="player">👩 Anya</div>
+                                <div class="score">289</div>
+                            </div>
+                            <div class="leaderboard-item silver">
+                                <div class="rank">2.</div>
+                                <div class="player">👨 Apa</div>
+                                <div class="score">245</div>
+                            </div>
+                            <div class="leaderboard-item bronze">
+                                <div class="rank">3.</div>
+                                <div class="player">👶 Gyerkőc</div>
+                                <div class="score">156</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Creativity Section -->
+                <section id="creativity" class="content-section">
+                    <div class="section-header">
+                        <h2>🎨 Kreativitás</h2>
+                        <p>AR eszközök és interaktív játékok</p>
+                    </div>
+
+                    <div class="creative-activities" id="creative-activities">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <div class="creative-gallery">
+                        <h3>🖼️ Családi Galéria</h3>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <div class="gallery-placeholder">🎨</div>
+                                <p>Gyerkőc rajza</p>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="gallery-placeholder">🎵</div>
+                                <p>Családi dal</p>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="gallery-placeholder">📚</div>
+                                <p>Közös mese</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Family Section -->
+                <section id="family" class="content-section">
+                    <div class="section-header">
+                        <h2>👥 Család</h2>
+                        <p>Kommunikáció és közös tervezés</p>
+                    </div>
+
+                    <div class="family-features">
+                        <div class="family-chat">
+                            <h3>💬 Családi Chat</h3>
+                            <div class="family-messages" id="family-messages">
+                                <div class="family-message">
+                                    <div class="message-author">👩 Anya</div>
+                                    <div class="message-text">Ki segít a vacsorával? 🍽️</div>
+                                    <div class="message-time">18:30</div>
+                                </div>
+                                <div class="family-message">
+                                    <div class="message-author">👨 Apa</div>
+                                    <div class="message-text">Én segítek! 🙋‍♂️</div>
+                                    <div class="message-time">18:32</div>
+                                </div>
+                            </div>
+                            <div class="family-chat-input">
+                                <input type="text" id="family-chat-input" placeholder="Írj üzenetet a családnak..." class="form-control">
+                                <button class="btn btn--primary" id="send-family-message">📤</button>
+                            </div>
+                        </div>
+
+                        <div class="family-timeline">
+                            <h3>📅 Családi Idővonal</h3>
+                            <div class="timeline" id="family-timeline">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Safety Section -->
+                <section id="safety" class="content-section">
+                    <div class="section-header">
+                        <h2>🛡️ Biztonság</h2>
+                        <p>Helymeghatározás és vészhelyzet</p>
+                    </div>
+
+                    <div class="safety-status">
+                        <div class="status-card safe">
+                            <h3>✅ Minden Biztonságban</h3>
+                            <p>Minden családtag biztonságos zónában van</p>
+                        </div>
+                    </div>
+
+                    <div class="location-map">
+                        <h3>📍 Család Helye</h3>
+                        <div class="map-placeholder" id="family-map">
+                            <div class="map-locations">
+                                <div class="location-marker home">
+                                    <span class="marker-icon">🏠</span>
+                                    <span class="marker-label">Otthon - Mind</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="safety-features">
+                        <h3>🚨 Biztonsági Funkciók</h3>
+                        <div class="safety-buttons">
+                            <button class="safety-btn emergency" id="emergency-btn">
+                                <span class="safety-icon">🚨</span>
+                                <span class="safety-text">Vészhelyzet</span>
+                            </button>
+                            <button class="safety-btn safe-walk" id="safe-walk-btn">
+                                <span class="safety-icon">🚶</span>
+                                <span class="safety-text">Safe Walk</span>
+                            </button>
+                            <button class="safety-btn check-in" id="check-in-btn">
+                                <span class="safety-icon">📍</span>
+                                <span class="safety-text">Bejelentkezés</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="content-section">
+                    <div class="section-header">
+                        <h2>⚙️ Beállítások</h2>
+                        <p>Alkalmazás és profil beállítások</p>
+                    </div>
+
+                    <div class="settings-groups">
+                        <div class="settings-group">
+                            <h3>👤 Profil</h3>
+                            <div class="setting-item">
+                                <label>Név módosítása</label>
+                                <input type="text" class="form-control" value="Apa">
+                            </div>
+                            <div class="setting-item">
+                                <label>Emoji választás</label>
+                                <select class="form-control">
+                                    <option value="👨" selected>👨 Férfi</option>
+                                    <option value="👩">👩 Nő</option>
+                                    <option value="👶">👶 Gyerek</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>🔔 Értesítések</h3>
+                            <div class="setting-item toggle">
+                                <label>Kihívás értesítések</label>
+                                <input type="checkbox" class="toggle-switch" checked>
+                            </div>
+                            <div class="setting-item toggle">
+                                <label>Családi üzenetek</label>
+                                <input type="checkbox" class="toggle-switch" checked>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>🧪 Beta Teszt</h3>
+                            <button class="btn btn--outline" id="beta-feedback-full">
+                                📝 Visszajelzés küldése
+                            </button>
+                            <button class="btn btn--outline" id="feature-request">
+                                💡 Funkció kérés
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Otthon</span>
+                </button>
+                <button class="nav-item" data-section="ai-assistant">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-label">AI</span>
+                </button>
+                <button class="nav-item" data-section="challenges">
+                    <span class="nav-icon">🏆</span>
+                    <span class="nav-label">Kihívások</span>
+                </button>
+                <button class="nav-item" data-section="creativity">
+                    <span class="nav-icon">🎨</span>
+                    <span class="nav-label">Kreativitás</span>
+                </button>
+                <button class="nav-item" data-section="family">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-label">Család</span>
+                </button>
+                <button class="nav-item" data-section="safety">
+                    <span class="nav-icon">🛡️</span>
+                    <span class="nav-label">Biztonság</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- AI Chat Floating Button -->
+        <button id="ai-chat-floating" class="ai-chat-floating hidden">
+            <span class="chat-icon">🤖</span>
+        </button>
+
+        <!-- Modals -->
+        <div id="beta-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🧪 Beta Visszajelzés</h3>
+                    <button class="modal-close" id="close-beta-modal">✕</button>
+                </div>
+                <div class="modal-body">
+                    <form id="beta-feedback-form">
+                        <div class="form-group">
+                            <label class="form-label">Értékelés (1-5)</label>
+                            <div class="rating-stars">
+                                <span class="star" data-rating="1">⭐</span>
+                                <span class="star" data-rating="2">⭐</span>
+                                <span class="star" data-rating="3">⭐</span>
+                                <span class="star" data-rating="4">⭐</span>
+                                <span class="star" data-rating="5">⭐</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Visszajelzés</label>
+                            <textarea class="form-control" placeholder="Mit gondolsz a P-Family alkalmazásról?"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bug jelentés</label>
+                            <textarea class="form-control" placeholder="Találtál hibát? Írd le itt..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">📤 Küldés</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOS Modal -->
+        <div id="sos-modal" class="modal hidden">
+            <div class="modal-content emergency">
+                <div class="modal-header emergency">
+                    <h3>🚨 VÉSZHELYZET</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Vészhelyzeti hívás indítása...</p>
+                    <div class="emergency-countdown">
+                        <div class="countdown-number" id="countdown">5</div>
+                        <p>másodperc múlva automatikus hívás</p>
+                    </div>
+                    <div class="emergency-actions">
+                        <button class="btn btn--primary btn--lg" id="cancel-emergency">❌ Mégse</button>
+                        <button class="btn emergency-btn btn--lg" id="call-now">📞 Hívás Most</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

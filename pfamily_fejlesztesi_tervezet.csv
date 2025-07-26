@@ -1,0 +1,9 @@
+Fázis,Időtartam,Fő Funkciók,Prioritás,Technológia
+Beta Tesztelés,2-3 hét,"Felhasználói tesztelés gyerekekkel és szülőkkel, Feedback gyűjtés, Hibajavítások",Magas,"Firebase Analytics, User Testing Tools"
+AI Integráció,3-4 hét,"AI szülői asszisztens, Személyre szabott javaslatok, Mood tracking",Magas,"Gemini AI, TensorFlow Lite"
+Gamifikáció Bővítés,2-3 hét,"Kiterjesztett pontozási rendszer, Családi kihívások, Jutalom rendszer",Közepes,"Custom Reward System, Push Notifications"
+Biztonsági Fejlesztések,2-3 hét,"Fejlett helymeghatározás, SOS funkciók, Biztonságos zónák beállítása",Magas,"GPS APIs, Emergency Services Integration"
+Kreativitás Eszközök,3-4 hét,"AR kreatív eszközök, 3D modellezés, Interaktív oktatási játékok",Közepes,"ARCore, WebGL, Canvas API"
+Családi Kommunikáció,2-3 hét,"Videó chat, Családi timeline, Közös projekt menedzsment",Közepes,"WebRTC, Socket.io, Cloud Messaging"
+Adatanalitika,1-2 hét,"Felhasználói viselkedés elemzése, Teljesítmény metrikák, A/B tesztelés",Alacsony,"Google Analytics, Mixpanel"
+Véglegesítés,2-3 hét,"Utolsó tesztelés, Dokumentáció, Store feltöltés előkészítése",Magas,"Progressive Web App, Firebase Hosting"
